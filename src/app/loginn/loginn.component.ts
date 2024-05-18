@@ -26,10 +26,20 @@ export class LoginnComponent implements OnInit {
   onSubmit() {
     this.formSubmitted = true;
     if (this.loginForm.valid) {
-      this.loginFailed = false; 
-      this.router.navigate(['/home']);
+      const email = this.loginForm.get('email')?.value;
+      const password = this.loginForm.get('password')?.value;
+
+      const storedData = JSON.parse(localStorage.getItem('registerFormData') || '[]');
+      const user = storedData.find((data: any) => data.email === email && data.password === password);
+
+      if (user) {
+        this.loginFailed = false;
+        this.router.navigate(['/home']);
+      } else {
+        this.loginFailed = true;
+      }
     } else {
-      this.loginFailed = true; 
+      this.loginFailed = true;
     }
   }
 }
