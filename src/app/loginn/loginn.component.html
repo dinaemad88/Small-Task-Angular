@@ -1,0 +1,46 @@
+
+<app-header></app-header>
+
+
+  
+    <div class="container d-flex justify-content-center align-items-center vh-90 overflow-auto mt-5">
+      <div class="card shadow p-4 flex-fill" style="max-width: 400px; width: 100%;">
+        <div class="row g-0">
+          <div class="col text-center p-2 mb-3 bg-light">
+            <span class="fs-3">👋 Welcome!</span>
+          </div>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-3">
+            <label for="email">Email<span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter email" />
+            <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || formSubmitted)" class="text-danger">
+              <i class="fa-solid fa-circle-exclamation"></i> Email is required and must be a valid email address.
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="password">Password<span class="text-danger">*</span></label>
+            <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password" />
+            <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || formSubmitted)" class="text-danger">
+              <i class="fa-solid fa-circle-exclamation"></i> Password is required and must be at least 6 characters long.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <p class="text-center mt-3">Not a member? <a routerLink="/register">Signup now</a></p>
+          <div class="container p-4 pb-0 d-flex justify-content-center align-items-center">
+            <section class="mb-4">
+              <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #3b5998;" href="#!" role="button"><i class="fab fa-facebook-f"></i></a>
+              <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #dd4b39;" href="#!" role="button"><i class="fab fa-google"></i></a>
+              <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #0082ca;" href="#!" role="button"><i class="fab fa-linkedin-in"></i></a>
+              <a data-mdb-ripple-init class="btn text-white btn-floating m-1" style="background-color: #333333;" href="#!" role="button"><i class="fab fa-github"></i></a>
+            </section>
+          </div>
+        </form>
+        <div *ngIf="loginFailed" class="text-danger mt-3">
+          Invalid email or password. Please try again.
+        </div>
+      </div>
+    </div>
+    
+
+<app-footer class="fixed-bottom"></app-footer>
