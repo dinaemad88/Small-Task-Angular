@@ -9,6 +9,8 @@ import { HeaderComponent } from './shard/header/header.component';
 import { FooterComponent } from './shard/footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HomeComponent } from './home/home.component';
+import { AuthService } from './services/auth.service'; 
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 
 @NgModule({
   declarations: [
@@ -17,17 +19,17 @@ import { HomeComponent } from './home/home.component';
     LoginnComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent // Declare the LoginComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule, // Add this line
+    ReactiveFormsModule,
     AppRoutingModule,
     FontAwesomeModule,
-    
+    HttpClientModule
 
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

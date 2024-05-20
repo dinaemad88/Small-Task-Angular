@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-loginn',
@@ -12,7 +13,7 @@ export class LoginnComponent implements OnInit {
   loginFailed: boolean = false;
   formSubmitted: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -29,15 +30,15 @@ export class LoginnComponent implements OnInit {
       const email = this.loginForm.get('email')?.value;
       const password = this.loginForm.get('password')?.value;
 
-      const storedData = JSON.parse(localStorage.getItem('registerFormData') || '[]');
-      const user = storedData.find((data: any) => data.email === email && data.password === password);
-
-      if (user) {
-        this.loginFailed = false;
-        this.router.navigate(['/home']);
-      } else {
-        this.loginFailed = true;
-      }
+      this.authService.login(email, password).subscribe(
+        () => {
+          this.loginFailed = false;
+          this.router.navigate(['/home']);
+        },
+        () => {
+          this.loginFailed = true;
+        }
+      );
     } else {
       this.loginFailed = true;
     }

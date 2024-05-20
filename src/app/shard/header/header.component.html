@@ -1,18 +1,35 @@
-
-  <nav class="navbar navbar-expand-lg bg-body-tertiary pt-3">
-    <div class="container-fluid">
-  
-      <h1><a class="navbar-brand" >👋 Welcome</a></h1>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-     
-  </ul>
-      <form class="d-flex" >
-          <a class="btn btn-success mx-2" type="submit" href="/Login">Login</a>
-          <a class="btn btn-primary mx-2" type="submit" href="/register"> Create Account</a>
-          <a class="btn btn-danger mx-2" type="submit" href="/">Logout</a>
-      </form>
-      
-  
-    </div>
-  </nav>
-  
+<nav class=
+"navbar navbar-expand
+-lg bg-body-tertiary pt-3">
+  <div class=
+  "container-fluid">
+    <h1><a
+       class=
+       "navbar-brand">
+       👋 Welcome</a></h1>
+    <ul class=
+    "navbar-nav 
+    me-auto mb-2 mb-lg-0"></ul>
+    <form class=
+    "d-flex">
+      <ng-container 
+      *ngIf="!isLoggedIn">
+        <a class=
+        "btn btn-success 
+        mx-2"
+         routerLink=
+         "/login">Login</a>
+        <a class=
+        "btn btn-primary mx-2" 
+        routerLink="/register">
+        Create Account</a>
+      </ng-container>
+      <ng-container
+       *ngIf="isLoggedIn">
+        <a class="btn btn-danger mx-2"
+         href="#" 
+         (click)="logout()">Logout</a>
+      </ng-container>
+    </form>
+  </div>
+</nav>

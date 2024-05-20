@@ -1,15 +1,21 @@
 <app-header></app-header>
 
-<div class="container d-flex justify-content-center align-items-center vh-90 overflow-auto mt-5">
-  <div class="card shadow p-4 flex-fill" style="max-width: 400px; width: 100%;">
+<div class=
+"container d-flex justify-content-center
+ align-items-center vh-90 overflow-auto mt-5">
+  <div class="card shadow p-4 flex-fill" 
+  style="max-width: 400px; width: 100%;">
     <div class="row g-0">
       <div class="col text-center p-2 mb-3 bg-light">
-        <span class="fs-3">👋 Welcome!</span>
+        <span class="fs-3">
+          👋 Welcome!</span>
       </div>
     </div>
     
     <div class="login-container">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]=
+      "loginForm" 
+      (ngSubmit)="onSubmit()">
         <div>
           <label for="email">Email<span class="text-danger">*</span></label>
           <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter email" />
@@ -48,9 +54,11 @@
             </a>
           </section>
         </div>
+        <p class="text-center mt-3">
+          Not a member ? <a routerLink="/register">Signup now</a>
+        </p>
       </form>
     </div>
   </div>
 </div>
-
 <app-footer class="fixed-bottom"></app-footer>

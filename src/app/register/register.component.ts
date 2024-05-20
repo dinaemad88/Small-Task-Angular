@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterfakeApiService } from '../services/registerfake-api.service';
 
 @Component({
   selector: 'app-register',
@@ -8,7 +9,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
   errors: string[] = [];
   countries: string[] = [
     'Cairo', 'Alexandria', 'Giza', 'Luxor', 'Aswan', 'Port Said', 'Suez',
@@ -16,12 +16,11 @@ export class RegisterComponent implements OnInit {
     'Damietta', 'Kafr El Sheikh', 'Asyut', 'Sharqia', 'Gharbia', 'Monufia',
     'Dakahlia', 'Beheira', 'Matrouh', 'Qalyubia', 'New Valley', 'Red Sea',
     'North Sinai', 'South Sinai'
-  ];
-  
-  constructor(private router: Router) {}
+    ];
+  constructor(private router: Router, private authService: RegisterfakeApiService) {}
 
   ngOnInit() {
-    this.initializeForm(); 
+    this.initializeForm();
   }
 
   initializeForm() {
@@ -35,58 +34,47 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    if (this.registerForm.valid) {
-      console.log('Register form submitted:', this.registerForm.value);
-   
-    }
-  }
-
   registerForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4),
-      Validators.pattern(/^[a-zA-Z]{3,}(?:\s[a-zA-Z]{3,})*$/),
-    ]),
-    email: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
-    ]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^\+?\d{7,14}$/),
-    ]),
+    name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.pattern(/^[a-zA-Z]{3,}(?:\s[a-zA-Z]{3,})*$/)]),
+    email: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(/^\+?\d{7,14}$/)]),
     gender: new FormControl('', [Validators.required]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(15),
-    ]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]),
     Governorate: new FormControl('', [Validators.required]),
   });
 
   registerSubmitted() {
     this.errors = [];
     this.registerForm.markAllAsTouched();
-  
+
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
-      const storedData = JSON.parse(localStorage.getItem('registerFormData') || '[]');
-  
-      const existingEmail = storedData.find((data: any) => data.email === formData.email);
-      const existingPhone = storedData.find((data: any) => data.phone === formData.phone);
-  
-      if (existingEmail || existingPhone) {
-        if (existingEmail) {
-          this.errors.push('Email already exists.');
-        }
-        if (existingPhone) {
-          this.errors.push('Phone number already exists.');
-        }
+
+      if (typeof formData.email === 'string') {
+        this.authService.getUserByEmail(formData.email).subscribe(
+          (users: any[]) => {
+            if (users.length > 0) {
+              this.errors.push('Email already exists.');
+            } else {
+              this.authService.register(formData).subscribe(
+                () => {
+                  console.log('Form Data Saved:', formData);
+                  this.router.navigate(['/Login']);
+                },
+                (error) => {
+                  console.error('Error occurred while registering:', error);
+                  this.errors.push('Unable to connect to the server.');
+                }
+              );
+            }
+          },
+          (error) => {
+            console.error('Error occurred while checking email:', error);
+            this.errors.push('Unable to connect to the server.');
+          }
+        );
       } else {
-        localStorage.setItem('registerFormData', JSON.stringify([...storedData, formData]));
-        console.log('Form Data Saved:', formData);
-        this.router.navigate(['/Login']);
+        console.log('Email is not a valid string');
       }
     } else {
       console.log('Form is invalid');
