@@ -33,7 +33,7 @@ export class LoginnComponent implements OnInit {
       this.authService.login(email, password).subscribe(
         () => {
           this.loginFailed = false;
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home']); // Redirect to home page after login
         },
         () => {
           this.loginFailed = true;
