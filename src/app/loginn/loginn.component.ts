@@ -31,11 +31,13 @@ export class LoginnComponent implements OnInit {
       const password = this.loginForm.get('password')?.value;
 
       this.authService.login(email, password).subscribe(
-        () => {
+        (user) => {
           this.loginFailed = false;
-          this.router.navigate(['/home']); // Redirect to home page after login
+          this.router.navigate(['/home']);
+          console.log('Logged in user:', user);
         },
-        () => {
+        (error) => {
+          console.error('Login failed:', error);
           this.loginFailed = true;
         }
       );

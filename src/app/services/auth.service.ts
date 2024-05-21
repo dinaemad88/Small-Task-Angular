@@ -11,7 +11,9 @@ export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  constructor(private router: Router, private registerfakeApiService: RegisterfakeApiService) {}
+  constructor(private router: Router, private registerfakeApiService: RegisterfakeApiService) {
+    this.checkAuthStatus();
+  }
 
   checkAuthStatus() {
     const user = localStorage.getItem('user');
@@ -36,6 +38,6 @@ export class AuthService {
   logout() {
     localStorage.removeItem('user');
     this.isLoggedInSubject.next(false);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/Login']);
   }
 }

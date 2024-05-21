@@ -16,7 +16,8 @@ export class RegisterComponent implements OnInit {
     'Damietta', 'Kafr El Sheikh', 'Asyut', 'Sharqia', 'Gharbia', 'Monufia',
     'Dakahlia', 'Beheira', 'Matrouh', 'Qalyubia', 'New Valley', 'Red Sea',
     'North Sinai', 'South Sinai'
-    ];
+  ];
+
   constructor(private router: Router, private authService: RegisterfakeApiService) {}
 
   ngOnInit() {
